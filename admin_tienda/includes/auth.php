@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin_email'] = $response['data']['usuario']['email'];
             $_SESSION['admin_token'] = $response['data']['token'];
             
-            header('Location: dashboard.php');
+            header('Location: ../dashboard.php');
             exit;
         } else {
             $error = 'Credenciales inválidas';
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($action === 'logout') {
         session_destroy();
-        header('Location: login.php');
+        header('Location: ../login.php');
         exit;
     }
 }
