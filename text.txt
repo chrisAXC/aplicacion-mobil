@@ -1,1 +1,2 @@
-hola
+instlar node.js y la dependencia con
+npm install (carpeta node modules)
