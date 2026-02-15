@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivProductoDetail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_product_placeholder"
+            android:background="@color/light_gray" />
+
+        <TextView
+            android:id="@+id/tvProductoNombreDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre del producto"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/tvProductoDescripcionDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción completa del producto"
+            android:textSize="16sp"
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tvProductoPrecioDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="$0.00"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/tvProductoStockDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stock: 0"
+            android:textSize="14sp"
+            android:textColor="@color/dark_gray"
+            android:layout_marginTop="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAgregarCarritoDetail"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Agregar al carrito"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="8dp"
+            android:layout_marginTop="24dp" />
+
+    </LinearLayout>
+</ScrollView>
