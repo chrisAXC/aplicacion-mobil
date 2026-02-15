@@ -1,9 +1,11 @@
 const Usuario = require('../models/usuarioModel');
 const Admin = require('../models/adminModel');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const usuarioController = {
     
+    // Obtener todos los usuarios
     async getAll(req, res) {
         try {
             const usuarios = await Usuario.getAll();
@@ -84,6 +86,65 @@ const usuarioController = {
         } catch (error) {
             res.status(500).json({ 
                 message: 'Error al crear usuario', 
+                error: error.message 
+            });
+        }
+    },
+
+    // LOGIN de usuario
+    async login(req, res) {
+        try {
+            const { email, password } = req.body;
+
+            // Validar campos requeridos
+            if (!email || !password) {
+                return res.status(400).json({ 
+                    message: 'Email y contraseña son requeridos' 
+                });
+            }
+
+            // Buscar usuario por email (incluye password)
+            const usuario = await Usuario.findByEmail(email);
+            
+            if (!usuario) {
+                return res.status(401).json({ 
+                    message: 'Credenciales inválidas' 
+                });
+            }
+
+            // Verificar contraseña
+            const validPassword = await bcrypt.compare(password, usuario.password);
+            
+            if (!validPassword) {
+                return res.status(401).json({ 
+                    message: 'Credenciales inválidas' 
+                });
+            }
+
+            // Generar token JWT
+            const token = jwt.sign(
+                { 
+                    id: usuario.id_usuario, 
+                    email: usuario.email,
+                    tipo: 'usuario'
+                }, 
+                process.env.JWT_SECRET || 'tu_secreto_jwt_temporal',
+                { expiresIn: '7d' }
+            );
+
+            // Enviar respuesta sin contraseña
+            const { password: _, ...usuarioSinPassword } = usuario;
+            
+            res.json({
+                message: 'Login exitoso',
+                token: token,
+                usuario: usuarioSinPassword
+            });
+
+        } catch (error) {
+            console.error('Error en login:', error);
+            res.status(500).json({ 
+                message: 'Error en el servidor', 
                 error: error.message 
             });
         }
@@ -421,81 +482,5 @@ const usuarioController = {
     }
 };
 
-// LOGIN de usuario (NUEVA FUNCIÓN)
-async function login(req, res) {
-    try {
-        const { email, password } = req.body;
-
-        // Validar campos requeridos
-        if (!email || !password) {
-            return res.status(400).json({ 
-                message: 'Email y contraseña son requeridos' 
-            });
-        }
-
-        // Buscar usuario por email (incluye password)
-        const usuario = await Usuario.findByEmail(email);
-        
-        if (!usuario) {
-            return res.status(401).json({ 
-                message: 'Credenciales inválidas' 
-            });
-        }
-
-        // Verificar contraseña
-        const validPassword = await bcrypt.compare(password, usuario.password);
-        
-        if (!validPassword) {
-            return res.status(401).json({ 
-                message: 'Credenciales inválidas' 
-            });
-        }
-
-        // Generar token JWT (si tienes JWT instalado)
-        // Si no tienes JWT, podemos crear un token simple
-        const jwt = require('jsonwebtoken');
-        const token = jwt.sign(
-            { 
-                id: usuario.id_usuario, 
-                email: usuario.email,
-                tipo: 'usuario'
-            }, 
-            'tu_secreto_jwt', // Cambia esto por una variable de entorno
-            { expiresIn: '7d' }
-        );
-
-        // Enviar respuesta sin contraseña
-        const { password: _, ...usuarioSinPassword } = usuario;
-        
-        res.json({
-            message: 'Login exitoso',
-            token: token,
-            usuario: usuarioSinPassword
-        });
-
-    } catch (error) {
-        console.error('Error en login:', error);
-        res.status(500).json({ 
-            message: 'Error en el servidor', 
-            error: error.message 
-        });
-    }
-}
-
-// Agrega esta línea al final, dentro de module.exports
-module.exports = {
-    getAll,
-    getById,
-    create,
-    update,
-    changePassword,
-    disable,
-    enable,
-    getDireccion,
-    updateDireccion,
-    getHistorialCompras,
-    getEstadisticas,
-    login  // ← AGREGAR ESTA LÍNEA
-};
-
+// ✅ EXPORTACIÓN CORRECTA - Solo una vez al final
 module.exports = usuarioController;
