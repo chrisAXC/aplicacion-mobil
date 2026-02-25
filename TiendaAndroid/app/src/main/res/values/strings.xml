@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TiendaAndroid</string>
+    <string name="agregar_al_carrito">Agregar al carrito</string>  <!-- Agregar esta línea -->
+</resources>

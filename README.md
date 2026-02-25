@@ -1,1 +1,1 @@
-En este proyecto se usaron PHP, Xampp, MAUI, .NET y Node.js
+En este proyecto se usaron PHP, Xampp, android studio con java y Node.js
